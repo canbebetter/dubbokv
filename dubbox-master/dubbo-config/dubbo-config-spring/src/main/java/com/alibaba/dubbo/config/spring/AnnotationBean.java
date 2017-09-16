@@ -141,6 +141,12 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
             clazz = AopUtils.getTargetClass(bean);
         }
         Service service = clazz.getAnnotation(Service.class);
+        if(service==null){
+            org.springframework.stereotype.Service springService = clazz.getAnnotation(org.springframework.stereotype.Service.class);
+            if(springService!=null){
+                service = new ServiceImpl();
+            }
+        }
         if (service != null) {
             ServiceBean<Object> serviceConfig = new ServiceBean<Object>(service);
             if (void.class.equals(service.interfaceClass())
